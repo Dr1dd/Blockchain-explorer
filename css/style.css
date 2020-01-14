@@ -1,0 +1,33 @@
+body{
+	margin: 0;
+}
+h1{
+	color:gray;
+}
+.center{
+	display: margin;
+	justify-content: center;
+}
+.main{
+	width: 100%;
+}
+.search{
+	width: 445px;
+}
+.blocktext{
+	font-size: 11pt;
+	font-weight: 700;
+	color: gray;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.outputText{
+	margin-top: 33vh;
+}
+.bottomBorder{
+	border-bottom: solid #c5c5c5 1px
+}
+.textPadding{
+	padding: 7px;
+}
