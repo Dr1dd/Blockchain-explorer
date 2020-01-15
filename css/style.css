@@ -21,6 +21,7 @@ h1{
 	white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    cursor: pointer;
 }
 .blocktextClickable{
     font-size: 11pt;
@@ -31,10 +32,15 @@ h1{
     overflow: hidden;
 }
 .outputText{
-	margin-top: 33vh;
+	margin-top: 20vh;
 }
 .outputBlocks{
 	margin-top: 33vh;
+}
+.outputHeader{
+	color: black;
+    font-size: 12pt;
+    margin-bottom: 10px;
 }
 .bottomBorder{
 	border-bottom: solid #c5c5c5 1px
@@ -74,6 +80,9 @@ h1{
   border-radius: 37px;
 }
 .aBlock{
+	cursor: pointer;
+}
+a{
 	cursor: pointer;
 }
 .paddingleft{

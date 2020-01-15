@@ -23,34 +23,62 @@
 		$sum = $block->count('tx');
 		return $sum;
 	}
-	// function calculateFees($bitcoind, $block){
-	// 	$count =0;
-	// 	$sumIn = 0;
-	// 	$sumOut =0;
-	// 	foreach ($block['tx'] as $tx) {
-	// 	 	$transactionraw = $bitcoind->getrawtransaction(strval($tx));
-	// 	 	$transaction = $bitcoind->decoderawtransaction(strval($transactionraw));
-	// 		$vin = $transaction['vin'];
-	// 	 	if(isset($vin['txid'])){
-	// 			echo $transaction;
-	// 		    $txid = $vin['txid'];
-	// 			$innerTransactionRaw = $bitcoind->getrawtransaction(strval($txid));
-	// 			$innerTransaction = $bitcoind->decoderawtransaction(strval($innerTransactionRaw));
+	function calculateFees($bitcoind, $block){
+		$count =0;
+		$sumIn = 0;
+		$sumOut =0;
+		$tx = $block['tx'][0];
+		$tx = $bitcoind->getrawtransaction(strval($tx));
+		$tx = $bitcoind->decoderawtransaction(strval($tx));
+		$vout = $tx['vout'];
+		$value = 0;
+		foreach ($vout as $key) {
+			if($key['n'] == 0) $value += $key['value'];
+		}
+		if(intval($block['height']) <210000) $value = $value -50;
+		if(210000 < intval($block['height']) && intval($block['height']) <420000) $value = $value -25;
+		if(420000 < intval($block['height']) && intval($block['height']) <630000) $value = $value -12.5;
+		if(630000 < intval($block['height']) && intval($block['height']) <840000) $value = $value -6.25;
 
-	// 			$vin_vout = $transaction['vout'];
-	// 			foreach ($vin_vout as $out) {
-	// 				if($out['n'] == $vin_vout) $sumIn+=$out['value'];
-	// 			}
-	// 			$vout = $transaction['vout'];
-	// 			foreach ($vout as $output){
-	// 				$sumOut = $output['value'];
-	// 			}
+
+		return $value;
+	}
+	function calculateBlockReward($bitcoind, $block){
+		$count =0;
+		$sumIn = 0;
+		$sumOut =0;
+		$tx = $block['tx'][0];
+		$tx = $bitcoind->getrawtransaction(strval($tx));
+		$tx = $bitcoind->decoderawtransaction(strval($tx));
+		$vout = $tx['vout'];
+		$value = 0;
+		foreach ($vout as $key) {
+			if($key['n'] == 0) $value += $key['value'];
+		}
+		$oldval = $value;
+		if(intval($block['height']) <210000) $value = $value -50;
+		if(210000 < intval($block['height']) && intval($block['height']) <420000) $value = $value -25;
+		if(420000 < intval($block['height']) && intval($block['height']) <630000) $value = $value -12.5;
+		if(630000 < intval($block['height']) && intval($block['height']) <840000) $value = $value -6.25;
+		$value = $oldval - $value;
+		return $value;
+	}
+	// function totalTxValue($bitcoind, $block){
+	// 	$tx = $block['tx'];
+	// 	$sum = 0;
+
+	// 	foreach ($tx as $value) {
+	// 		$txraw = $bitcoind->getrawtransaction(strval($value));
+	// 		$txdecoded = $bitcoind->decoderawtransaction(strval($txraw));
+	// 		#echo $txdecoded;
+	// 		$out = $txdecoded['vout'];
+	// 		foreach ($out as $key) {
+	// 			echo $key['value'];
+	// 			$sum += $key['value'];
 	// 		}
-	// 		if($count >100) break;
-	// 		$count += 1;
-	// 	 }
-	// 	$tx_fee = $sumIn - $sumOut;
-	// 	return $tx_fee;
+
+	// 	}
+	// 	return $sum;
 	// }
 
 ?>
@@ -60,7 +88,7 @@
 	    <meta name="viewport" content="width=device-width, initial-scale=1">
 	    <meta name="viewport" content="height=device-height, initial-scale=1">
 	    <link rel="stylesheet" href="../../css/style.css">
-	    <title>Table generator</title>
+	    <title>Bitcoin Explorer</title>
 	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -92,6 +120,11 @@
 				 </div>
 
 				<div class = "col-sm-8">
+					<div class ="row">
+							<div class = "col-sm-2">
+								<div class ="blocktext paddingleft outputHeader">  Block </div>
+							</div>
+					</div>
 					<div class = "row bottomBorder textPadding">
 						<div class = "col-sm-3">
 							<div class ="blocktext">  Hash </div>
@@ -178,6 +211,22 @@
 						</div>
 						<div class = "col-sm-9"> 
 							<div class ="blocktext">  <?php echo calculateTxCount($blockinfo) ?> </div> 
+						</div>
+					</div>
+					<div class = "row bottomBorder textPadding">
+						<div class = "col-sm-3">
+							<div class ="blocktext">  Block reward </div>
+						</div>
+						<div class = "col-sm-9"> 
+							<div class ="blocktext">  <?php if($blockinfo['height'] == 0) echo "Genesis Block"; else echo calculateBlockReward($bitcoind, $blockinfo) ?> BTC</div> 
+						</div>
+					</div>
+					<div class = "row bottomBorder textPadding">
+						<div class = "col-sm-3">
+							<div class ="blocktext">  Fee reward </div>
+						</div>
+						<div class = "col-sm-9"> 
+							<div class ="blocktext">  <?php if($blockinfo['height'] == 0) echo "Genesis Block"; else echo calculateFees($bitcoind, $blockinfo) ?> BTC</div> 
 						</div>
 					</div>
 				</div>
