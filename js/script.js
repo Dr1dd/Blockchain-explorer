@@ -4,10 +4,17 @@ $(function(){
 		if($("#srchinput").val().length != 0){
 			if($("#srchinput").val().length == 64){
 				console.log("Hello");
-				window.open("src/php/block.php?id="+$("#srchinput").val()+"");
+				if(location.pathname.substring(0,19) == "/blockchain/src/php") location.replace("block.php?id="+$("#srchinput").val()+"");
+				else location.replace("src/php/block.php?id="+$("#srchinput").val()+"");
 			}
-			//else if ($("#srchinput").val().length < 8)
+			else {
+				if(location.pathname.substring(0,19) == "/blockchain/src/php") location.replace("block.php?id="+$("#srchinput").val()+"");
+				else location.replace("src/php/block.php?id="+$("#srchinput").val()+"");
+			}
 		}
 	});
 
+	$(".aBloc").on("click", function(){
+		 location.replace("src/php/block.php?id="+$(this).text()+"");
+	});
 });

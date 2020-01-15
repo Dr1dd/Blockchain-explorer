@@ -22,7 +22,18 @@ h1{
     text-overflow: ellipsis;
     overflow: hidden;
 }
+.blocktextClickable{
+    font-size: 11pt;
+	font-weight: 700;
+	color: gray;
+	white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 .outputText{
+	margin-top: 33vh;
+}
+.outputBlocks{
 	margin-top: 33vh;
 }
 .bottomBorder{
@@ -31,3 +42,48 @@ h1{
 .textPadding{
 	padding: 7px;
 }
+.blockchainList{
+	overflow: scroll;
+	height: 87vh;
+	overflow-x: hidden;
+
+}
+
+.blockchainList::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.blockchainList::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+.blockchainList::-webkit-scrollbar-thumb {
+  background: #5c5c5c;
+  border: 0px none #50494f;
+  border-radius: 52px;
+}
+.blockchainList::-webkit-scrollbar-thumb:hover {
+  background: #52494b;
+}
+.blockchainList::-webkit-scrollbar-thumb:active {
+  background: #4f1e2d;
+}
+.blockchainList::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  border: 0px none #4b454a;
+  border-radius: 37px;
+}
+.aBlock{
+	cursor: pointer;
+}
+.paddingleft{
+	padding-left: 5px;
+}
+
+.nopadding{
+	padding: 0px;
+}
+.margintop{
+	margin-top: 10vh;
+}
+
